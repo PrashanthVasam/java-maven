@@ -18,7 +18,7 @@ jobs:
         uses: SonarSource/sonarcloud-github-action@master
         with:
           organization: ${{ secrets.ORG }}
-          project: ${{ secret.PRO }}
+          project: ${{ secrets.PRO }}
           token: ${{ secrets.SONAR_TOKEN }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
