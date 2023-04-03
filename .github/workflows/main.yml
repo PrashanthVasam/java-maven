@@ -17,8 +17,8 @@ jobs:
       - name: Setup SonarCloud analysis
         uses: SonarSource/sonarcloud-github-action@master
         with:
-          organization: prashanthvasam
-          project: java-maven
+          organization: ${{ secrets.ORG }}
+          project: ${{ secret.PRO }}
           token: ${{ secrets.SONAR_TOKEN }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
