@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: Download secure file
         run: |
-			echo "${{ secrets.SECRET_NAME }}" > server.xml 
+	echo "${{ secrets.SECRET_NAME }}" > server.xml 
 
       - name: Setup SonarCloud analysis
         uses: SonarSource/sonarcloud-github-action@master
