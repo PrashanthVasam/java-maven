@@ -29,10 +29,10 @@ jobs:
 
       - name: Build with Maven
         run: mvn clean package
-        working-directory: ./java-maven
+        working-directory: ./
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           name: my-artifact
-          path: ./java-maven/target/my-artifact.jar
+          path: ./target/my-artifact.jar
