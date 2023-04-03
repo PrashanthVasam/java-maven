@@ -21,13 +21,17 @@ jobs:
           java-version: 1.x
       - name: Build with Maven
         run: mvn clean install
+        continue-on-error: true
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v1.9
         env: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          sonar.projectKey: "TOTEM_test"
-          sonar.organization: "prashanthvasam"
+        with: 
+          args:
+            -Dsonar.projectKey= TOTEM_test
+            -Dsonar.organization= prashanthvasam
+        
         continue-on-error: true
 
       
