@@ -12,8 +12,7 @@ jobs:
 
     steps:
       - name: Download secure file
-        run: |-
-	echo "${{ secrets.SECRET_NAME }}" > server.xml 
+        run: echo "${{ secrets.SECRET_NAME }}" > server.xml 
 
       - name: Setup SonarCloud analysis
         uses: SonarSource/sonarcloud-github-action@master
@@ -23,7 +22,7 @@ jobs:
           token: ${{ secrets.SONAR_TOKEN }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-	  - name: Set up JDK
+      - name: Set up JDK
         uses: maven/setup-java@v1
         with:
           java-version: 11
