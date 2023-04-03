@@ -13,13 +13,9 @@ jobs:
     steps:
       - name: Download secure file
         run: echo "${{ secrets.SECRET_NAME }}" > server.xml 
-
-      - name: Setup SonarCloud analysis
-        uses: SonarSource/sonarcloud-github-action@master
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v1.9
         with:
-          organization: ${{ secrets.ORG }}
-          project: ${{ secrets.PRO }}
-          token: ${{ secrets.SONAR_TOKEN }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          projectBaseDir: ./
+
       
