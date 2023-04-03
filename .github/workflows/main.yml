@@ -26,15 +26,4 @@ jobs:
         uses: maven/setup-java@v1
         with:
           java-version: 11
-      - name : linux
-        run : ls -la
-        
-      - name: Build with Maven
-        run: mvn clean package
-        working-directory: ./
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: my-artifact
-          path: ./target/file.jar
+      
