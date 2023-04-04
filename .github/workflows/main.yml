@@ -15,6 +15,11 @@ jobs:
         uses: Azure/setup-helm@v3
         with:
          version: 3.0.0
+      - name: Kubectl tool installer
+		    uses: Azure/setup-kubectl@v3
+			  with:
+				  version: 1.8.9
+          
       - name: Log in to Amazon ECR with AWS CLI
         id: login-ecr-aws-cli
         run: |
