@@ -1,0 +1,59 @@
+name: Push to ECR
+
+on:
+  push:
+    branches:
+           - master
+      
+
+jobs:
+  push-to-ecr:
+    runs-on: ubuntu-latest
+
+    steps:
+      
+      - name: Helm tool installer
+        uses: Azure/setup-helm@v3
+        with:
+         version: 3.0.0
+      - name: Kubectl tool installer
+        uses: Azure/setup-kubectl@v3
+      - name: Log in to Amazon ECR with AWS CLI
+        id: login-ecr-aws-cli
+        run: |
+          aws configure set aws_access_key_id "${{ secrets.AWS_ACCESS_KEY_ID }}"
+          aws configure set aws_secret_access_key "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+          aws configure set aws_session_token "${{ secrets.AWS_SESSION_TOKEN }}"
+          aws configure set region "${{ secrets.AWS_REGION }}"
+          aws ecr get-login-password | docker login --username AWS --password-stdin "${{ secrets.AWS_REGISTRY_URL }}"
+        env:
+          AWS_REGION: "${{ secrets.AWS_REGION }}"
+          AWS_REGISTRY_URL: "${{ secrets.AWS_REGISTRY_URL }}"
+        continue-on-error: true
+      - name: Download secure file
+        run: echo "${{ secrets.SECRET_NAME }}" > server.xml
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Java JDK
+        uses: actions/setup-java@v1.4.4
+        with:
+          java-version: 1.x
+      - name: Build with Maven
+        run: mvn clean package
+        continue-on-error: true
+      - name: Upload JAR artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: my-app
+          path: target/my-app.jar
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v1.9
+        env: 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with: 
+          args:
+            -Dsonar.projectKey= TOTEM_test
+            -Dsonar.organization= prashanthvasam
+        
+        continue-on-error: true
