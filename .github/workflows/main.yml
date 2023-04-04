@@ -11,6 +11,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Log in to Amazon ECR with AWS CLI
+        id: login-ecr-aws-cli
+        run: |
+          aws configure set aws_access_key_id "${{ secrets.AWS_ACCESS_KEY_ID }}"
+          aws configure set aws_secret_access_key "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+          aws configure set region "${{ secrets.AWS_REGION }}"
+          aws ecr get-login-password | docker login --username AWS --password-stdin "${{ secrets.AWS_REGISTRY_URL }}"
+        env:
+          AWS_REGION: "${{ secrets.AWS_REGION }}"
+          AWS_REGISTRY_URL: "${{ secrets.AWS_REGISTRY_URL }}"
       - name: Download secure file
         run: echo "${{ secrets.SECRET_NAME }}" > server.xml
       - name: Checkout code
