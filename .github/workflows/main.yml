@@ -34,6 +34,11 @@ jobs:
       - name: Build with Maven
         run: mvn clean package
         continue-on-error: true
+      - name: Upload JAR artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: my-app
+          path: target/my-app.jar
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v1.9
         env: 
