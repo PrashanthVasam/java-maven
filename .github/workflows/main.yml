@@ -45,7 +45,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: my-app
-          path: target/my-app.jar
+          path: .mvn/wrapper/*.jar
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v1.9
         env: 
