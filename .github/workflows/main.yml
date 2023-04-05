@@ -63,5 +63,5 @@ jobs:
       - name: docker push
         run: 
           docker tag totem:latest 554487920627.dkr.ecr.us-east-1.amazonaws.com/totem:latest
-          docker tag totem:latest 554487920627.dkr.ecr.us-east-1.amazonaws.com/totem:latest
+          docker push 554487920627.dkr.ecr.us-east-1.amazonaws.com/totem:latest
           
