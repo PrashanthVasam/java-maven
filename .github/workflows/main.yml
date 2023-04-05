@@ -59,7 +59,7 @@ jobs:
         #continue-on-error: true
       - uses: actions/checkout@v3
       - name: Build the Docker image
-        run: docker build -t totem:latest
+        run: docker build . --file Dockerfile --tag totem:latest
       - name: docker push
         run: 
           docker tag totem:latest 554487920627.dkr.ecr.us-east-1.amazonaws.com/totem:latest
