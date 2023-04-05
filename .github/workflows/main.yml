@@ -53,7 +53,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with: 
           args:
-            -Dsonar.projectKey= TOTEM_test
+            -Dsonar.projectKey= PrashanthVasam_java-maven
             -Dsonar.organization= prashanthvasam
         
 
