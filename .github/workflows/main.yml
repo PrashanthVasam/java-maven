@@ -57,3 +57,9 @@ jobs:
             -Dsonar.organization= prashanthvasam
         
         continue-on-error: true
+      - uses: actions/checkout@v3
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile --tag my-image-name:latest
+      - uses: opspresso/action-docker@v0.4.0
+      - name: docker push
+        run: docker push  my-image-name:latest
