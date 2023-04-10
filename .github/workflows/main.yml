@@ -31,3 +31,6 @@ jobs:
           token: ${{ secrets.PAT }}
       - name: Execute script
         run: bash my-script.sh
+        env:
+           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+           OAUTH_TOKEN: ${{ secrets.OAUTH_TOKEN }}
