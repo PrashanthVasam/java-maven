@@ -3,8 +3,7 @@ name: Push to ECR
 on:
   push:
     branches:
-           - master
-      
+           - main
 
 jobs:
   push-to-ecr:
@@ -27,5 +26,8 @@ jobs:
         run: mvn clean package
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.PAT }}
       - name: Execute script
         run: bash my-script.sh
