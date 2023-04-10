@@ -17,6 +17,8 @@
                     echo "Creating Tag : $tagname"
                     # Output vars are not grabbed by the get source's tag task since it's another job
                     cd $GITHUB_WORKSPACE/
+                    git config --global user.name "PrashanthVasam"
+                    git config --global user.email "prashanth.vasam@cgi.com"
                     git tag "$tagname"
                     git -c http.extraheader="AUTHORIZATION: bearer $secrets.OAUTH_TOKEN" push origin --tags
                 else
