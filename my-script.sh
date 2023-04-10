@@ -10,7 +10,7 @@
                 echo "The build is processing ! "
                 echo "##vso[task.setvariable variable=appversion]$newVersion"
                 # Tag only main branches
-                if [ "${{ GITHUB_REF }}" == "release" ] || [ "${{ GITHUB_REF }}" == "master" ]
+                if [ "$GITHUB_REF" == "release" ] || [ "$GITHUB_REF" == "master" ]
                 then
                     tagname="$newVersion-${{ GITHUB_REF }}-${{ github.run_number }}"
                     echo "Creating Tag : $tagname"
