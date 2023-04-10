@@ -18,7 +18,7 @@
                     # Output vars are not grabbed by the get source's tag task since it's another job
                     cd /home/vsts/work/1/s/common-utils/
                     git tag "$tagname"
-                    git -c http.extraheader="AUTHORIZATION: bearer ${{ env.System_AccessToken }}" push origin --tags
+                    git -c http.extraheader="AUTHORIZATION: bearer $secrets.OAUTH_TOKEN" push origin --tags
                 else
                     echo "Branch $branch_name is not a Tag candidate"
                 fi
