@@ -16,7 +16,7 @@
                     tagname="$newVersion-$branch_name-$GITHUB_RUN_NUMBER }}"
                     echo "Creating Tag : $tagname"
                     # Output vars are not grabbed by the get source's tag task since it's another job
-                    cd /home/vsts/work/1/s/common-utils/
+                    cd $GITHUB_WORKSPACE/common-utils/
                     git tag "$tagname"
                     git -c http.extraheader="AUTHORIZATION: bearer $secrets.OAUTH_TOKEN" push origin --tags
                 else
