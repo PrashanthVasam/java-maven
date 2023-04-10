@@ -1,29 +1,25 @@
-#!/bin/bash
-
-# Extract the current version number from pom.xml
-newVersion=$(grep -oPm1 "(?<=<version>)[^-]+" pom.xml)
-
-# Check if the current version is the same as the previous version
-if [ "$newVersion" == 1.9.21 ]; then
-  echo "ERROR: Version $newVersion already exists. Please try with a different version."
-  exit 1
-else
-  echo "Previous version: 1.9.21"
-  echo "Actual version: $newVersion"
-  echo "The build is processing!"
-
-  # Set the appversion variable to the new version number
-  echo "::set-env name=appversion::$newVersion"
-
-  # Tag only main branches
-  if [[ "$GITHUB_REF" == "refs/heads/release" || "$GITHUB_REF" == "refs/heads/master" ]]; then
-    tagname="$newVersion-${GITHUB_REF##*/}-$GITHUB_RUN_NUMBER"
-    echo "Creating tag: tagname"
-    git tag tagname
-    git -c http.extraheader="AUTHORIZATION: bearer ${{ secrets.GITHUB_TOKEN }}" push origin --tags
-  else
-    echo "Branch $GITHUB_REF is not a tag candidate"
-  fi
-
-  exit 0
-fi
+#newVersion=$(sudo grep -oPm1 "(?<=<version>)[^-]+"< "/home/vsts/work/1/s/msa-dto/pom.xml")
+        newVersion=$(grep -m 1 "<version>" pom.xml | sed 's/.*<version>\([^<]*\)<\/version>.*/\1/')
+        if [ "$newVersion" == "${{ env.appversion }}" ]
+        then
+                echo "ERROR : Version $newVersion already exists, try with a different version."
+                exit 1
+        else
+                echo "Previous version : ${{ env.appversion }}"
+                echo "Actual version : $newVersion"
+                echo "The build is processing ! "
+                echo "##vso[task.setvariable variable=appversion]$newVersion"
+                # Tag only main branches
+                if [ "${{ github.ref }}" == "release" ] || [ "${{ github.ref }}" == "master" ]
+                then
+                    tagname="$newVersion-${{ github.ref }}-${{ github.run_number }}"
+                    echo "Creating Tag : $tagname"
+                    # Output vars are not grabbed by the get source's tag task since it's another job
+                    cd /home/vsts/work/1/s/common-utils/
+                    git tag "$tagname"
+                    git -c http.extraheader="AUTHORIZATION: bearer ${{ env.System_AccessToken }}" push origin --tags
+                else
+                    echo "Branch ${{ github.ref }} is not a Tag candidate"
+                fi
+                exit 0
+        fi
