@@ -10,16 +10,17 @@
                 echo "The build is processing ! "
                 echo "##vso[task.setvariable variable=appversion]$newVersion"
                 # Tag only main branches
-                if [ "$GITHUB_REF" == "release" ] || [ "$GITHUB_REF" == "master" ]
+                branch_name=$(basename $GITHUB_REF)
+                if [ "$branch_name" == "release" ] || [ "$branch_name" == "master" ]
                 then
-                    tagname="$newVersion-$GITHUB_REF-$GITHUB_RUN_NUMBER }}"
+                    tagname="$newVersion-$branch_name-$GITHUB_RUN_NUMBER }}"
                     echo "Creating Tag : $tagname"
                     # Output vars are not grabbed by the get source's tag task since it's another job
                     cd /home/vsts/work/1/s/common-utils/
                     git tag "$tagname"
                     git -c http.extraheader="AUTHORIZATION: bearer ${{ env.System_AccessToken }}" push origin --tags
                 else
-                    echo "Branch $GITHUB_REF is not a Tag candidate"
+                    echo "Branch $branch_name is not a Tag candidate"
                 fi
                 exit 0
         fi
