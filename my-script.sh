@@ -1,11 +1,11 @@
 #newVersion=$(sudo grep -oPm1 "(?<=<version>)[^-]+"< "/home/vsts/work/1/s/msa-dto/pom.xml")
         newVersion=$(grep -m 1 "<version>" pom.xml | sed 's/.*<version>\([^<]*\)<\/version>.*/\1/')
-        if [ "$newVersion" == "2.7.10" ]
+        if [ "$newVersion" == "2.7.11" ]
         then
                 echo "ERROR : Version $newVersion already exists, try with a different version."
                 exit 1
         else
-                echo "Previous version : 2.7.10"
+                echo "Previous version : 2.7.11"
                 echo "Actual version : $newVersion"
                 echo "The build is processing ! "
                 echo "##vso[task.setvariable variable=appversion]$newVersion"
