@@ -11,3 +11,58 @@ jobs:
         uses: Azure/setup-helm@v3
         with:
           version: 3.0.0
+      - name: Kubectl tool installer
+        uses: Azure/setup-kubectl@v3
+      - name: Log in to Amazon ECR with AWS CLI
+        id: login-ecr-aws-cli
+        run: |
+          aws configure set aws_access_key_id "${{ secrets.AWS_ACCESS_KEY_ID }}"
+          aws configure set aws_secret_access_key "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+          aws configure set aws_session_token "${{ secrets.AWS_SESSION_TOKEN }}"
+          aws configure set region "${{ secrets.AWS_REGION }}"
+          aws ecr get-login-password | docker login --username AWS --password-stdin "${{ secrets.AWS_REGISTRY_URL }}"
+        env:
+          AWS_REGION: "${{ secrets.AWS_REGION }}"
+          AWS_REGISTRY_URL: "${{ secrets.AWS_REGISTRY_URL }}"
+        continue-on-error: true
+      - name: Download secure file
+        run: echo "${{ secrets.SECRET_NAME }}" > server.xml
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Java JDK
+        uses: actions/setup-java@v1.4.4
+        with:
+          java-version: 11
+      - name: Build with Maven
+        run: mvn clean verify sonar:sonar -Dsonar.projectKey=PrashanthVasam_java-maven -Dsonar.organization=prashanthvasam -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=fba6ddf742019d42da60e2bb97a8f39e21e84ace
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Upload JAR artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: my-app
+          path: .mvn/wrapper/*.jar
+      - uses: actions/checkout@v3
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile --tag totem:latest
+      - name: docker tag
+        run: 
+          docker tag totem:latest 554487920627.dkr.ecr.us-east-1.amazonaws.com/totem:latest
+        continue-on-error: true
+      - name: docker push
+        run:
+          docker push 554487920627.dkr.ecr.us-east-1.amazonaws.com/totem:latest
+        continue-on-error: true
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.PAT }}
+      - name: Execute script
+        run: bash my-script.sh
+        env:
+           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+           OAUTH_TOKEN: ${{ secrets.OAUTH_TOKEN }}
