@@ -4,7 +4,7 @@ name: Push to ECR
 on:
   push:
     branches:
-           - master
+     - master
 
 	  
 jobs:
