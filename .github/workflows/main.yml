@@ -57,6 +57,10 @@ jobs:
             -Dsonar.organization= prashanthvasam
         
         continue-on-error: true
+      - name: Helm tool installer
+        uses: Azure/setup-helm@v3
+        with:
+         version: 3.0.0
       
 
       
