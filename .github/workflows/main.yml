@@ -2,17 +2,11 @@ name: Push to ECR
 on:
   push:
     branches:
-      - master
+      - main
 jobs:
   push-to-ecr:
     runs-on: ubuntu-latest
     steps:
-      - name: Helm tool installer
-        uses: Azure/setup-helm@v3
-        with:
-          version: 3.0.0
-      - name: Kubectl tool installer
-        uses: Azure/setup-kubectl@v3
       - name: Log in to Amazon ECR with AWS CLI
         id: login-ecr-aws-cli
         run: |
@@ -66,8 +60,5 @@ jobs:
         env:
            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
            OAUTH_TOKEN: ${{ secrets.OAUTH_TOKEN }}
-      - name: Update kubeconfig
-        run: aws eks update-kubeconfig --name <eks-cluster-name> --region <aws-region>
       
-      - name: Test kubectl command
-        run: kubectl get pods   
+
