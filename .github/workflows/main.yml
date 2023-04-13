@@ -37,14 +37,14 @@ jobs:
           path: .mvn/wrapper/*.jar
       - uses: actions/checkout@v3
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag totem:20230413
+        run: docker build . --file Dockerfile --tag totem:latest
       - name: docker tag
         run: 
-          docker tag totem:latest 554487920627.dkr.ecr.us-east-1.amazonaws.com/totem:20230413
+          docker tag totem:latest 554487920627.dkr.ecr.us-east-1.amazonaws.com/totem:latest
         continue-on-error: true
       - name: docker push
         run:
-          docker push 554487920627.dkr.ecr.us-east-1.amazonaws.com/totem:20230413
+          docker push 554487920627.dkr.ecr.us-east-1.amazonaws.com/totem:latest
         continue-on-error: true
       - name: Checkout code
         uses: actions/checkout@v2
