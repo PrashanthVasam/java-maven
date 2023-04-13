@@ -30,30 +30,8 @@ jobs:
           AWS_REGION: "${{ secrets.AWS_REGION }}"
           AWS_REGISTRY_URL: "${{ secrets.AWS_REGISTRY_URL }}"
         continue-on-error: true
-      - name: Download secure file
-        run: echo "${{ secrets.SECRET_NAME }}" > server.xml
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Setup Java JDK
-        uses: actions/setup-java@v1.4.4
-        with:
-          java-version: 1.x
-      - name: Build with Maven
-        run: mvn clean package
-        continue-on-error: true
-      - name: Upload JAR artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: my-app
-          path: .mvn/wrapper/*.jar
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@v1.9
-        env: 
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with: 
-          args:
-            -Dsonar.projectKey= TOTEM_test
-            -Dsonar.organization= prashanthvasam
-        
-        continue-on-error: true
+      - name: Update kubeconfig
+        run: aws eks update-kubeconfig --name <eks-cluster-name> --region <aws-region>
+      
+      - name: Test kubectl command
+        run: kubectl get pods
