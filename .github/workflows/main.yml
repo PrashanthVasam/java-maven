@@ -28,13 +28,15 @@ jobs:
         run: helm create msa-dev-helm
       - name: helm package 
         run: helm package msa-dev-helm
-      - name: Tagging
-        run: docker tag msa-dev-helm-0.1.0.tgz totemtest.azurecr.io/totemtest/msa-dev-helm-0.1.0.tgz:latest
+      - name: ACR Login
+        run: az acr login --name TOTEMTEST 
+      #- name: Tagging
+      #  run: docker tag msa-dev-helm-0.1.0.tgz totemtest.azurecr.io/totemtest/msa-dev-helm-0.1.0.tgz:latest
       - name: Push to Acr
-        run: docker push totemtest.azurecr.io/totemtestmsa-dev-helm-0.1.0.tgz:latest
+        run: docker push totemtest.azurecr.io/totemtest/msa-dev-helm-0.1.0.tgz
       - name: Pull Helm repo
-        run: helm pull totemtest.azurecr.io/totemtest/msa-dev-helm-0.1.0.tgz:latest
-      - name: Tagging
-        run: docker tag totemtest.azurecr.io/totemtest/msa-dev-helm-0.1.0.tgz:latest 554487920627.dkr.ecr.us-east-1.amazonaws.com/totem:latest
-      - name: Push to ECR
-        run: docker push 554487920627.dkr.ecr.us-east-1.amazonaws.com/totem:latest
+        run: helm pull totemtest.azurecr.io/totemtest/msa-dev-helm-0.1.0.tgz
+      #- name: Tagging
+     #   run: docker tag totemtest.azurecr.io/totemtest/msa-dev-helm-0.1.0.tgz:latest 554487920627.dkr.ecr.us-east-1.amazonaws.com/totem:latest
+     # - name: Push to ECR
+      #  run: docker push 554487920627.dkr.ecr.us-east-1.amazonaws.com/totem:latest
