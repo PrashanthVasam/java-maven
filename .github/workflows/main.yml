@@ -14,8 +14,10 @@ jobs:
           aws configure set aws_secret_access_key "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           aws configure set aws_session_token "${{ secrets.AWS_SESSION_TOKEN }}"
           aws configure set region "${{ secrets.AWS_REGION }}"
-      - name: Install Azure CLI
-        uses: azure/setup-azure-cli@v1
+      - name: Install azure-cli
+  # You may pin to the exact commit or the version.
+  # uses: pietrobolcato/install-azure-cli-action@9a10af1be5e3eb7931f48c0290364a131e7ecd70
+        uses: pietrobolcato/install-azure-cli-action@v1.0.1
       - name: Azure Login
         uses: Azure/login@v1.4.6
         with:
