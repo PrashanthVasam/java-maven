@@ -14,47 +14,32 @@ jobs:
           aws configure set aws_secret_access_key "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           aws configure set aws_session_token "${{ secrets.AWS_SESSION_TOKEN }}"
           aws configure set region "${{ secrets.AWS_REGION }}"
-          aws ecr get-login-password | docker login --username AWS --password-stdin "${{ secrets.AWS_REGISTRY_URL }}"
-        env:
-          AWS_REGION: "${{ secrets.AWS_REGION }}"
-          AWS_REGISTRY_URL: "${{ secrets.AWS_REGISTRY_URL }}"
-        continue-on-error: true
-      - name: Download secure file
-        run: echo "${{ secrets.SECRET_NAME }}" > server.xml
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Setup Java JDK
-        uses: actions/setup-java@v1.4.4
+      - name: Azure Login
+        uses: Azure/login@v1.4.6
         with:
-          java-version: 11
-      - name: Build with Maven
-        run: mvn clean verify sonar:sonar -Dsonar.projectKey=PrashanthVasam_java-maven -Dsonar.organization=prashanthvasam -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=fba6ddf742019d42da60e2bb97a8f39e21e84ace
-
-      - name: Upload JAR artifact
-        uses: actions/upload-artifact@v2
+    # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
+          creds: "${{ secrets.AZURE_CRED }}"
+    # ClientId of the Azure Service principal created.
+          client-id: "${{ secrets.AZURE_CLIENTID }}"
+    # TenantId of the Azure Service principal created.
+          tenant-id: "${{ secrets.AZURE_TENANTID }}"
+    # Azure subscriptionId
+          subscription-id: "${{ secrets.AZURE_SUB }}"
+      - name: Helm tool installer
+        uses: Azure/setup-helm@v3
         with:
-          name: my-app
-          path: .mvn/wrapper/*.jar
-      - uses: actions/checkout@v3
-      - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag totem:latest
-      - name: docker tag
-        run: 
-          docker tag totem:latest 554487920627.dkr.ecr.us-east-1.amazonaws.com/totem:latest
-        continue-on-error: true
-      - name: docker push
-        run:
-          docker push 554487920627.dkr.ecr.us-east-1.amazonaws.com/totem:latest
-        continue-on-error: true
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.PAT }}
-      - name: Execute script
-        run: bash my-script.sh
-        env:
-           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-           OAUTH_TOKEN: ${{ secrets.OAUTH_TOKEN }}
-      
-
+          version: latest
+      - name: createing helm charts
+        run: helm create msa-dev-helm
+      - name: helm package 
+        run: helm package msa-dev-helm
+      - name: Tagging
+        run: docker tag msa-dev-helm.tgz totemtest.azurecr.io/TOTEMTEST/msa-dev-helm:latest
+      - name: Push to Acr
+        run: docker push totemtest.azurecr.io/TOTEMTEST/msa-dev-helm:latest
+      - name: Pull Helm repo
+        run: helm pull totemtest.azurecr.io/TOTEMTEST/msa-dev-helm:latest
+      - name: Tagging
+        run: docker tag totemtest.azurecr.io/TOTEMTEST/msa-dev-helm:latest 554487920627.dkr.ecr.us-east-1.amazonaws.com/totem:latest
+      - name: Push to ECR
+        run: docker push 554487920627.dkr.ecr.us-east-1.amazonaws.com/totem:latest
