@@ -29,7 +29,7 @@ jobs:
       - name: helm package 
         run: helm package msa-dev-helm
       - name: Tagging
-        run: docker tag msa-dev-helm.tgz totemtest.azurecr.io/totemtest/msa-dev-helm-0.1.0.tgz:latest
+        run: docker tag msa-dev-helm-0.1.0.tgz totemtest.azurecr.io/totemtest/msa-dev-helm-0.1.0.tgz:latest
       - name: Push to Acr
         run: docker push totemtest.azurecr.io/totemtestmsa-dev-helm-0.1.0.tgz:latest
       - name: Pull Helm repo
