@@ -40,7 +40,7 @@ jobs:
       #- name: Tagging
       #  run: docker tag oci://totemtest.azurecr.io/helm/msa-dev-helm:0.1.0 554487920627.dkr.ecr.us-east-1.amazonaws.com/totem:latest
       - name: ECR Login
-        run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 554487920627.dkr.ecr.us-east-1.amazonaws.com
+        run: aws ecr get-login-password --region us-east-1 | helm registry login --username AWS --password-stdin 554487920627.dkr.ecr.us-east-1.amazonaws.com
       - name: Build Helm package
         run: helm package msa-dev-helm --destination .
       
