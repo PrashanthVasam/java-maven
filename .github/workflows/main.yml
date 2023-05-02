@@ -35,7 +35,7 @@ jobs:
       - name: Push to Acr
         run: helm push msa-dev-helm-0.1.0.tgz oci://totemtest.azurecr.io/helm
       - name: Pull Helm repo
-        run: helm pull totemtest.azurecr.io/totemtest/msa-dev-helm-0.1.0.tgz
+        run: helm pull oci://totemtest.azurecr.io/helm/msa-dev-helm:0.1.0
       #- name: Tagging
      #   run: docker tag totemtest.azurecr.io/totemtest/msa-dev-helm-0.1.0.tgz:latest 554487920627.dkr.ecr.us-east-1.amazonaws.com/totem:latest
      # - name: Push to ECR
