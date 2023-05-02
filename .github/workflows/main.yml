@@ -14,10 +14,10 @@ jobs:
           aws configure set aws_secret_access_key "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           aws configure set aws_session_token "${{ secrets.AWS_SESSION_TOKEN }}"
           aws configure set region "${{ secrets.AWS_REGION }}"
-      - name: Install azure-cli
+     # - name: Install azure-cli
   # You may pin to the exact commit or the version.
   # uses: pietrobolcato/install-azure-cli-action@9a10af1be5e3eb7931f48c0290364a131e7ecd70
-        uses: pietrobolcato/install-azure-cli-action@v1.0.1
+     #   uses: pietrobolcato/install-azure-cli-action@v1.0.1
       - name: AZ Login
         run: az login --service-principal -u ${{ secrets.AZURE_CLIENTID }} -p ${{ secrets.AZURE_CRED }} --tenant ${{ secrets.AZURE_TENANTID }}
       - name: Helm tool installer
@@ -33,7 +33,7 @@ jobs:
       #- name: Tagging
       #  run: docker tag msa-dev-helm-0.1.0.tgz totemtest.azurecr.io/totemtest/msa-dev-helm-0.1.0.tgz:latest
       - name: Push to Acr
-        run: az acr helm push totemtest.azurecr.io/totemtest/msa-dev-helm-0.1.0.tgz --name TOTEMTEST
+        run: az acr helm push msa-dev-helm-0.1.0.tgz --name TOTEMTEST
       - name: Pull Helm repo
         run: helm pull totemtest.azurecr.io/totemtest/msa-dev-helm-0.1.0.tgz
       #- name: Tagging
