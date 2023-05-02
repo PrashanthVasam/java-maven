@@ -45,4 +45,4 @@ jobs:
         run: helm package msa-dev-helm --destination .
       
       - name: Push to ECR
-        run: helm push msa-dev-helm-0.1.0.tgz 
+        run: helm push msa-dev-helm-0.1.0.tgz oci://554487920627.dkr.ecr.us-east-1.amazonaws.com/totem
