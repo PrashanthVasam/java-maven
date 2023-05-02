@@ -43,6 +43,4 @@ jobs:
       - name: Build Helm package
         run: helm package msa-dev-helm --destination .
       - name: Push to ECR
-        run: docker tag msa-dev-helm-0.1.0.tgz 554487920627.dkr.ecr.us-east-1.amazonaws.com/totem/msa-dev-helm:latest
-
-        #helm push msa-dev-helm-0.1.0.tgz https://554487920627.dkr.ecr.us-east-1.amazonaws.com/totem/msa-dev-helm:latest 
+        run: helm push msa-dev-helm-0.1.0.tgz http://554487920627.dkr.ecr.us-east-1.amazonaws.com/totem/msa-dev-helm:latest 
