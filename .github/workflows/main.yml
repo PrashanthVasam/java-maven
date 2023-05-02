@@ -18,17 +18,8 @@ jobs:
   # You may pin to the exact commit or the version.
   # uses: pietrobolcato/install-azure-cli-action@9a10af1be5e3eb7931f48c0290364a131e7ecd70
         uses: pietrobolcato/install-azure-cli-action@v1.0.1
-      - name: Azure Login
-        uses: Azure/login@v1.4.6
-        with:
-    # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
-          creds: "${{ secrets.AZURE_CRED }}"
-    # ClientId of the Azure Service principal created.
-          client-id: "${{ secrets.AZURE_CLIENTID }}"
-    # TenantId of the Azure Service principal created.
-          tenant-id: "${{ secrets.AZURE_TENANTID }}"
-    # Azure subscriptionId
-          subscription-id: "${{ secrets.AZURE_SUB }}"
+      - name: AZ Login
+        run: az login --service-principal -u ${{ secrets.AZURE_CLIENTID }} -p ${{ secrets.AZURE_CRED }} --tenant ${{ secrets.AZURE_TENANTID }}
       - name: Helm tool installer
         uses: Azure/setup-helm@v3
         with:
