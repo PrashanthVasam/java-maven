@@ -13,5 +13,5 @@ jobs:
           version: latest
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: awslogin
+      - name: helm-push
         run: sh helm.sh
