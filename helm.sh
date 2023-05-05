@@ -1,11 +1,13 @@
-#!/bin/bash
+function awsLogin() {
 
-aws configure set aws_access_key_id "${{ secrets.AWS_ACCESS_KEY_ID }}"
-aws configure set aws_secret_access_key "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-aws configure set aws_session_token "${{ secrets.AWS_SESSION_TOKEN }}"
-aws configure set region "${{ secrets.AWS_REGION }}"
-az login --service-principal -u ${{ secrets.AZURE_CLIENTID }} -p ${{ secrets.AZURE_CRED }} --tenant ${{ secrets.AZURE_TENANTID }}
-
+aws configure set aws_access_key_id $1
+aws configure set aws_secret_access_key $2
+aws configure set aws_session_token $3
+aws configure set region $4
+}
+function azureLogin() {
+az login --service-principal -u $1 -p $2 --tenant $3
+}
 az acr login --name TOTEMTEST
 helm pull oci://totemtest.azurecr.io/helm/msa-dev-helm --version 0.1.0
 pwd
