@@ -14,5 +14,5 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: helm.sh file
-        run: ./helm.sh
+        run: sh helm.sh
         
