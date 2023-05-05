@@ -46,8 +46,8 @@ jobs:
      #   run: aws ecr create-repository --repository-name msa-dev-helm --region us-east-1
       - name: ECR Login
         run: aws ecr get-login-password --region us-east-1 | helm registry login --username AWS --password-stdin 554487920627.dkr.ecr.us-east-1.amazonaws.com
-      - name: Build Helm package
-        run: helm package /home/runner/work/java-maven/java-maven/msa-dev-helm --destination .
+     # - name: Build Helm package
+      #  run: helm package /home/runner/work/java-maven/java-maven/msa-dev-helm --destination .
       
       - name: Push to ECR
-        run: helm push msa-dev-helm-0.1.0.tgz oci://554487920627.dkr.ecr.us-east-1.amazonaws.com/
+        run: helm push /home/runner/work/java-maven/java-maven/msa-dev-helm-0.1.0.tgz oci://554487920627.dkr.ecr.us-east-1.amazonaws.com/
