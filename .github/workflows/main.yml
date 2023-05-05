@@ -46,9 +46,7 @@ jobs:
         run: aws ecr get-login-password --region us-east-1 | helm registry login --username AWS --password-stdin 554487920627.dkr.ecr.us-east-1.amazonaws.com
       - name: Build Helm package
         run: helm package msa-dev-helm --destination .
-      # - name: docker tag
-        # run: docker tag msa-dev-helm-0.1.0.tgz 554487920627.dkr.ecr.us-east-1.amazonaws.com/totem:msa-dev-helm-0.1.0.tgz
-
-      
+      - name: docker tag
+        run: helm show chart msa-dev-helm-0.1.0.tgz | jq -c . > manifest.json   
       - name: Push to ECR
-        run: aws ecr put-image --repository-name totem --image-tag msa-dev-helm-0.1.0.tgz --image-manifest <(helm show chart msa-dev-helm-0.1.0.tgz)
+        run: aws ecr put-image --repository-name totem --image-tag msa-dev-helm-0.1.0.tgz --image-manifest file://manifest.json
