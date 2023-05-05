@@ -26,7 +26,7 @@ jobs:
           version: latest
       - name: createing helm charts
         run: helm create msa-dev-helm
-      - name: helm package 
+      - name: helm package 
         run: helm package msa-dev-helm 
       - name: ACR Login
         run: az acr login --name TOTEMTEST 
@@ -40,13 +40,11 @@ jobs:
       #- name: Tagging
       #  run: docker tag oci://totemtest.azurecr.io/helm/msa-dev-helm:0.1.0 554487920627.dkr.ecr.us-east-1.amazonaws.com/totem:latest
       - name: create ECR
-        run: aws ecr create-repository --repository-name helm-test-chart2 --region us-east-1
-    
+        run: aws ecr create-repository --repository-name msa-dev-helm --region us-east-1
       - name: ECR Login
         run: aws ecr get-login-password --region us-east-1 | helm registry login --username AWS --password-stdin 554487920627.dkr.ecr.us-east-1.amazonaws.com
       - name: Build Helm package
         run: helm package msa-dev-helm --destination .
-      - name: docker tag
-        run: helm show chart msa-dev-helm-0.1.0.tgz | jq -c . > manifest.json   
+      
       - name: Push to ECR
-        run: aws ecr put-image --repository-name totem --image-tag msa-dev-helm-0.1.0.tgz --image-manifest file://manifest.json
+        run: helm push msa-dev-helm-0.1.0.tgz oci://554487920627.dkr.ecr.us-east-1.amazonaws.com/
