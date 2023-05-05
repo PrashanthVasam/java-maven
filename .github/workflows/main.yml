@@ -14,15 +14,4 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: awslogin
-        run: 
-          source helm.bash
-          awsLogin "${{ secrets.AWS_ACCESS_KEY_ID }}" "${{ secrets.AWS_SECRET_ACCESS_KEY }}" "${{ secrets.AWS_SESSION_TOKEN }}" "${{ secrets.AWS_REGION }}"
-      - name: azure login
-        run: 
-          source helm.bash
-          azureLogin ${{ secrets.AZURE_CLIENTID }} ${{ secrets.AZURE_CRED }} ${{ secrets.AZURE_TENANTID }}
-      - name: helm push
-        run:
-          source helm.bash
-          helmpush
-        
+        run: sh helm.sh
